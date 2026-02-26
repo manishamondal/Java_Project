@@ -46,6 +46,19 @@
                     </archive>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <testResources>
+                        <testResource>
+                            <directory>src/test/resources</directory>
+                            <filtering>false</filtering>
+                        </testResource>
+                    </testResources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>
