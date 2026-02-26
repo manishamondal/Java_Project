@@ -1,5 +1,12 @@
+package com.example;
+
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class AppTest {
-    public static void main(String[] args) {
-        System.out.println("This is a dummy Java code that runs.");
+
+    @Test
+    public void testDummy() {
+        assertEquals(2, 1 + 1, "1 + 1 should equal 2");
     }
 }
