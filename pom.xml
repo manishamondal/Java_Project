@@ -33,7 +33,6 @@
     <build>
 
         <!-- Sonar Plugin Management -->
-        <pluginManagement>
             <plugins>
                 <plugin>
                     <groupId>org.sonarsource.scanner.maven</groupId>
@@ -61,7 +60,6 @@
 </plugin>
 
             </plugins>
-        </pluginManagement>
 
         <plugins>
 
