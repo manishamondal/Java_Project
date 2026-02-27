@@ -1,6 +1,215 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example</groupId>
+    <artifactId>dummy-java-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.9.3</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>com.example.App</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <configuration>
+                    <testResources>
+                        <testResource>
+                            <directory>src/test/resources</directory>
+                            <filtering>false</filtering>
+                        </testResource>
+                    </testResources>
+                <skip>true</skip> <!-- Skip test resources -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+Yes 👍 — the Main-Class part is correct and this will make your jar executable.
+
+But there is one problem in your pom.xml that is causing the warnings you saw.
+
+✅ Good part (important fix)
+
+This section is correct:
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-jar-plugin</artifactId>
+    <version>3.2.0</version>
+    <configuration>
+        <archive>
+            <manifest>
+                <addClasspath>true</addClasspath>
+                <mainClass>com.example.App</mainClass>
+            </manifest>
+        </archive>
+    </configuration>
+</plugin>
+
+👉 This tells Maven:
+
+✔ Which class to start
+✔ Makes jar runnable with:
+
+java -jar your.jar
+❌ Problem in your pom.xml
+
+This plugin:
+
+maven-resources-plugin
+
+You added:
+
+<testResources> ... </testResources>
+
+That is invalid configuration for that plugin.
+
+That’s why Jenkins logs showed:
+
+Parameter 'testResources' is unknown
+✅ Fix — remove that plugin completely
+
+Delete this whole block:
+
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-resources-plugin</artifactId>
+    <version>3.3.1</version>
+    <configuration>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>false</filtering>
+            </testResource>
+        </testResources>
+        <skip>true</skip>
+    </configuration>
+</plugin>
+
+You don’t need it.
+
+Maven handles resources automatically.
+
+⭐ Final clean <build> section (recommended)
+
+Use this:
+
+<build>
+    <plugins>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version>
+            <configuration>
+                <source>${maven.compiler.source}</source>
+                <target>${maven.compiler.target}</target>
+            </configuration>
+        </plugin>
+
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.2.0</version>
+            <configuration>
+                <archive>
+                    <manifest>
+                        <addClasspath>true</addClasspath>
+                        <mainClass>com.example.App</mainClass>
+                    </manifest>
+                </archive>
+            </configuration>
+        </plugin>
+
+    </plugins>
+</build>
+✅ After this
+
+Push changes to your repo on GitHub
+Run Jenkins again.
+
+Your Install stage should work.
+
+🧠 Important concept you just learned
+
+Your error was NOT Jenkins problem.
+
+It was:
+
+👉 Maven packaging problem
+
+This is extremely common in real jobs.
+
+If you want, next I can show:
+
+🔥 Why real companies don’t use maven-jar-plugin alone
+🔥 Spring Boot fat jar (huge concept)
+🔥 Proper Deploy stage instead of running jar in Jenkins
+🔥 Docker pipeline version (industry standard)
+🔥 The difference between library jar vs executable jar (interview question)
+🔥 Why your pipeline is already better than most beginners
+
+Just tell me 👍
+
+give me modified pom.xml
+
+Here is your clean, corrected pom.xml with:
+
+✅ Executable jar (Main-Class added)
+✅ Removed wrong resources plugin
+✅ Compiler plugin kept
+✅ Works with your Jenkins pipeline
+
+✅ Modified pom.xml
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
