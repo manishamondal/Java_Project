@@ -21,6 +21,7 @@ public class AppTest {
             System.setOut(originalOut);
         }
 
-        assertEquals("Hello, World!\n", buffer.toString());
+        assertEquals("Hello, World!" + System.lineSeparator(), buffer.toString());
+
     }
 }
