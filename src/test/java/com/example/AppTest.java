@@ -10,6 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AppTest {
 
     @Test
+    void constructor_covered() {
+    new App();
+   }
+
+    @Test
     void main_printsHelloWorld() {
         PrintStream originalOut = System.out;
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
