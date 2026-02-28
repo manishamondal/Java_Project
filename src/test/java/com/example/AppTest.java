@@ -42,7 +42,7 @@ private static class TestLogHandler extends Handler {
     }
 
     @Override public void flush() {
-        
+        // No buffering, so nothing to flush
     }
     @Override public void close() throws SecurityException {
         // No resources to close
