@@ -9,7 +9,7 @@ import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-public class AppTest {
+class AppTest {
 
     @Test
 void constructor_covered() {
