@@ -6,13 +6,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class AppTest {
 
     @Test
-    void constructor_covered() {
-    new App();
-   }
+void constructor_covered() {
+    App app = new App();
+    assertNotNull(app);
+}
+
 
     @Test
     void main_printsHelloWorld() {
