@@ -2,8 +2,6 @@ package com.example;
 
 import org.junit.jupiter.api.Test;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -39,12 +37,16 @@ private static class TestLogHandler extends Handler {
     String lastMessage;
 
     @Override
-    public void publish(LogRecord record) {
-        lastMessage = record.getMessage();
+    public void publish(LogRecord logRecord) {
+        lastMessage = logRecord.getMessage();
     }
 
-    @Override public void flush() {}
-    @Override public void close() throws SecurityException {}
+    @Override public void flush() {
+        
+    }
+    @Override public void close() throws SecurityException {
+        // No resources to close
+    }
 }
 
 }
