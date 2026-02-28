@@ -7,6 +7,9 @@ import java.io.PrintStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 public class AppTest {
 
@@ -18,18 +21,30 @@ void constructor_covered() {
 
 
     @Test
-    void main_printsHelloWorld() {
-        PrintStream originalOut = System.out;
-        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(buffer));
+void main_printsHelloWorld() {
+    Logger logger = Logger.getLogger(App.class.getName());
+    TestLogHandler handler = new TestLogHandler();
+    logger.addHandler(handler);
 
-        try {
-            App.main(new String[0]);
-        } finally {
-            System.setOut(originalOut);
-        }
-
-        assertEquals("Hello, World!" + System.lineSeparator(), buffer.toString());
-
+    try {
+        App.main(new String[0]);
+    } finally {
+        logger.removeHandler(handler);
     }
+
+    assertEquals("Hello, World!", handler.lastMessage);
+}
+
+private static class TestLogHandler extends Handler {
+    String lastMessage;
+
+    @Override
+    public void publish(LogRecord record) {
+        lastMessage = record.getMessage();
+    }
+
+    @Override public void flush() {}
+    @Override public void close() throws SecurityException {}
+}
+
 }
